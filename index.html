@@ -594,7 +594,7 @@ function renderKanban(){
   const cnt=document.getElementById('count-concluidos');
   if(cnt) cnt.textContent=concluidos.length;
   const lista=document.getElementById('lista-concluidos');
-  if(lista) lista.innerHTML=concluidos.map(t=>rCard(t,t._i)).join('')+'<button class="add-card" onclick="openModal('tarefa',3)">+ Adicionar</button>';
+  if(lista) lista.innerHTML=concluidos.map(t=>rCard(t,t._i)).join('')+"<button class=\"add-card\" onclick=\"openModal('tarefa',3)\">+ Adicionar</button>";
 }
 function toggleConcluidos(){
   const p=document.getElementById('painel-concluidos');
