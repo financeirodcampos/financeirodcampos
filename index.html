@@ -2,6 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FinSPE — Financeiro & Fiscal</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -581,6 +584,7 @@ const PAUTA=['Posição de saldo das SPEs','Contas pagas e pendentes','Obrigaç�
 let tarefas=[],spes=[],protestos=[],impostos=[],caucoes=[],adiantamentos=[];
 let editIdx=null,editType=null,currentUser=0,kFiltro='todos',impTab='10';
 let concFiltro='todos',concMesAtivo='Janeiro',concData={},concEditKey=null;
+let concObras=[],concObraEditIdx=null;
 let dempTabAtivo='Janeiro',demps=[],dempEditIdx=null;
 let cartaoTabAtivo='Janeiro',cartoes=[],cartaoEditIdx=null;
 const ALL_TABS=['tarefas','pessoas','protestos','impostos','caucao','adiantamento','calendario','conciliacoes','demp','cartao'];
@@ -960,8 +964,8 @@ const CONC_OBRAS_DEFAULT=[
   {obra:'Irmãos Joaquim',conta:'11496-0'},{obra:'Vellas Jurerê',conta:'11054-0'},
   {obra:'Lisboa',conta:'12166-5'},
 ];
-let concObras=[...CONC_OBRAS_DEFAULT];
-let concObraEditIdx=null;
+concObras=[...CONC_OBRAS_DEFAULT];
+let concObraEditIdx2=null; // placeholder
 const CONC_MESES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const CONC_MESES_ABR=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const CONC_ST={'conciliado':{bg:'#1a6b2e',color:'white',label:'Conciliado'},'diferenca':{bg:'#185FA5',color:'white',label:'Com diferença'},'parcial':{bg:'#5a3fa0',color:'white',label:'Parcialmente'}};
