@@ -805,9 +805,9 @@ function switchTab(t){
   if(t==='tarefas'||t==='pessoas')renderAll();
   if(t==='calendario')renderCal();
   if(t==='protestos'||t==='impostos'||t==='caucao'||t==='adiantamento')renderAll();
-  if(t==='conciliacoes'){loadConcData().then(renderConciliacoes);}
-  if(t==='demp'){loadDempData().then(()=>{const mesIdx=new Date().getMonth();const mesNome=MESES_EXT[mesIdx];dempTabAtivo=mesNome;document.querySelectorAll('#demp-mes-tabs .imp-tab').forEach((b,i)=>{b.classList.toggle('active',i===mesIdx);});renderDemp();});}
-  if(t==='cartao'){loadCartaoData().then(()=>{const mesIdx=new Date().getMonth();const mesNome=MESES_EXT[mesIdx];cartaoTabAtivo=mesNome;document.querySelectorAll('#cartao-mes-tabs .imp-tab').forEach((b,i)=>{b.classList.toggle('active',i===mesIdx);});renderCartao();});}
+  if(t==='conciliacoes'){renderConciliacoes();loadConcData().then(renderConciliacoes);}
+  if(t==='demp'){renderDemp();loadDempData().then(()=>{const mesIdx=new Date().getMonth();const mesNome=MESES_EXT[mesIdx];dempTabAtivo=mesNome;document.querySelectorAll('#demp-mes-tabs .imp-tab').forEach((b,i)=>{b.classList.toggle('active',i===mesIdx);});renderDemp();});}
+  if(t==='cartao'){renderCartao();loadCartaoData().then(()=>{const mesIdx=new Date().getMonth();const mesNome=MESES_EXT[mesIdx];cartaoTabAtivo=mesNome;document.querySelectorAll('#cartao-mes-tabs .imp-tab').forEach((b,i)=>{b.classList.toggle('active',i===mesIdx);});renderCartao();});}
 }
 
 function openModal(type,col,paraQuem){
