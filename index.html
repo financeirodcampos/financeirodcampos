@@ -719,13 +719,12 @@ async function loadAll(){
   spes=(sp.data||[]).map(r=>({...r,resps:r.resps||[]}));
   protestos=pr.data||[]; impostos=im.data||[]; caucoes=ca.data||[]; adiantamentos=ad.data||[];
   loadCloudLinks();
-  document.getElementById('loading-screen').classList.add('hidden');
   renderAll();
   await loadCalendario();
-  }catch(e){console.error('loadAll error:',e);document.getElementById('loading-screen').classList.add('hidden');}
+  }catch(e){console.error('loadAll error:',e);}
+  finally{document.getElementById('loading-screen').classList.add('hidden');}
 }
-// fallback: esconde loading após 5s mesmo se falhar
-setTimeout(()=>{const ls=document.getElementById('loading-screen');if(ls)ls.classList.add('hidden');},5000);
+setTimeout(()=>{const ls=document.getElementById('loading-screen');if(ls)ls.classList.add('hidden');},3000);
 
 sb.channel('finspe-ch')
   .on('postgres_changes',{event:'*',schema:'public',table:'tarefas'},()=>loadAll())
@@ -797,7 +796,19 @@ function renderAdiantamentos(){document.getElementById('adiantamento-tbody').inn
 
 function renderCheckin(){const hoje=new Date(),dias=['Segunda','Terça','Quarta','Quinta','Sexta'],dow=hoje.getDay(),hs=hoje.toISOString().slice(0,10),sem=Array.from({length:5},(_,i)=>{const d=new Date(hoje);d.setDate(hoje.getDate()-(dow===0?6:dow-1)+i);return d;}),f2=d=>`${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}`;document.getElementById('checkin-content').innerHTML=sem.map((d,di)=>{const ih=d.toISOString().slice(0,10)===hs;return `<div class="checkin-day${ih?' hoje':''}"><div class="checkin-day-header"><div class="checkin-day-title">${dias[di]}${ih?'<span class="hoje-badge">hoje</span>':''}</div><div style="font-size:12px;color:var(--text3);">${f2(d)}</div></div><div class="checkin-grid2">${PESSOAS.map(p=>`<div class="checkin-card" style="border-top:2px solid ${p.cor}"><div class="checkin-name"><div class="avatar-sm" style="background:${p.cor};width:18px;height:18px;font-size:8px;">${p.inicial}</div>${p.nome}</div>${CI_ITENS.map((item,ii)=>`<div class="ci"><input type="checkbox" id="ci-${di}-${p.nome}-${ii}"><label for="ci-${di}-${p.nome}-${ii}">${item}</label></div>`).join('')}</div>`).join('')}</div><div class="pauta-box"><div class="pauta-title">Pauta do dia</div>${PAUTA.map((item,ii)=>`<div class="ci"><input type="checkbox" id="pt-${di}-${ii}"><label for="pt-${di}-${ii}">${item}</label></div>`).join('')}</div></div>`;}).join('');}
 
-function switchTab(t){ALL_TABS.forEach(id=>{document.getElementById('tab-'+id).style.display=id===t?'block':'none';});document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',ALL_TABS[i]===t));if(t==='calendario')renderCal();if(t==='conciliacoes'){loadConcData().then(renderConciliacoes);}if(t==='demp'){loadDempData().then(()=>{const mesIdx=new Date().getMonth();const mesNome=MESES_EXT[mesIdx];dempTabAtivo=mesNome;document.querySelectorAll('#demp-mes-tabs .imp-tab').forEach((b,i)=>{b.classList.toggle('active',i===mesIdx);});renderDemp();});}if(t==='cartao'){loadCartaoData().then(()=>{const mesIdx=new Date().getMonth();const mesNome=MESES_EXT[mesIdx];cartaoTabAtivo=mesNome;document.querySelectorAll('#cartao-mes-tabs .imp-tab').forEach((b,i)=>{b.classList.toggle('active',i===mesIdx);});renderCartao();});}}
+function switchTab(t){
+  ALL_TABS.forEach(id=>{
+    const el=document.getElementById('tab-'+id);
+    if(el)el.style.display=id===t?'block':'none';
+  });
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',ALL_TABS[i]===t));
+  if(t==='tarefas'||t==='pessoas')renderAll();
+  if(t==='calendario')renderCal();
+  if(t==='protestos'||t==='impostos'||t==='caucao'||t==='adiantamento')renderAll();
+  if(t==='conciliacoes'){loadConcData().then(renderConciliacoes);}
+  if(t==='demp'){loadDempData().then(()=>{const mesIdx=new Date().getMonth();const mesNome=MESES_EXT[mesIdx];dempTabAtivo=mesNome;document.querySelectorAll('#demp-mes-tabs .imp-tab').forEach((b,i)=>{b.classList.toggle('active',i===mesIdx);});renderDemp();});}
+  if(t==='cartao'){loadCartaoData().then(()=>{const mesIdx=new Date().getMonth();const mesNome=MESES_EXT[mesIdx];cartaoTabAtivo=mesNome;document.querySelectorAll('#cartao-mes-tabs .imp-tab').forEach((b,i)=>{b.classList.toggle('active',i===mesIdx);});renderCartao();});}
+}
 
 function openModal(type,col,paraQuem){
   editIdx=null;editType=type;
