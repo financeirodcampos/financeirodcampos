@@ -706,6 +706,7 @@ function fmtD(d){if(!d)return '—';const[y,m,day]=d.split('-');return `${day}/$
 function getSit(s){if(s.situacao==='finalizado')return 'finalizado';const h=new Date().toISOString().slice(0,10);if(s.data&&s.data<h)return 'em-atraso';return s.situacao||'nao-iniciado';}
 
 async function loadAll(){
+  try{
   const[tr,sp,pr,im,ca,ad]=await Promise.all([
     sb.from('tarefas').select('*').order('created_at'),
     sb.from('spes').select('*').order('created_at'),
@@ -721,7 +722,10 @@ async function loadAll(){
   document.getElementById('loading-screen').classList.add('hidden');
   renderAll();
   await loadCalendario();
+  }catch(e){console.error('loadAll error:',e);document.getElementById('loading-screen').classList.add('hidden');}
 }
+// fallback: esconde loading após 5s mesmo se falhar
+setTimeout(()=>{const ls=document.getElementById('loading-screen');if(ls)ls.classList.add('hidden');},5000);
 
 sb.channel('finspe-ch')
   .on('postgres_changes',{event:'*',schema:'public',table:'tarefas'},()=>loadAll())
