@@ -938,6 +938,8 @@ sb.channel('finspe-cartao')
 
 
 // ===================== CONCILIAÇÕES =====================
+const CONC_MESES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const CONC_MESES_ABR=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const CONC_OBRAS_DEFAULT=[
   {obra:'Águas do Leste',conta:'13544-5'},{obra:'Allameda - St. Antônio IV',conta:'19.615-0'},
   {obra:'Areias do Leste',conta:'21.344-6'},{obra:'Barra da Lagoa',conta:'12611-0'},
@@ -965,9 +967,6 @@ const CONC_OBRAS_DEFAULT=[
   {obra:'Lisboa',conta:'12166-5'},
 ];
 concObras=[...CONC_OBRAS_DEFAULT];
-let concObraEditIdx2=null; // placeholder
-const CONC_MESES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-const CONC_MESES_ABR=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const CONC_ST={'conciliado':{bg:'#1a6b2e',color:'white',label:'Conciliado'},'diferenca':{bg:'#185FA5',color:'white',label:'Com diferença'},'parcial':{bg:'#5a3fa0',color:'white',label:'Parcialmente'}};
 function getConcAno(){return document.getElementById('conc-ano-sel')?.value||'2026';}
 function setConcFiltro(f,btn){concFiltro=f;document.querySelectorAll('.conc-filt-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');renderConciliacoes();}
